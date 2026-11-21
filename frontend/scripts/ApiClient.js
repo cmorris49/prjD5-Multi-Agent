@@ -10,7 +10,7 @@ export class ApiError extends Error {
 export class ApiClient {
     constructor(baseUrl, fetchImplementation = fetch) {
         this.baseUrl = baseUrl.replace(/\/$/, "");
-        this.fetchImplementation = fetchImplementation;
+        this.fetchImplementation = fetchImplementation.bind(globalThis);
     }
 
     async request(path, { method = "GET", body } = {}) {
