@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="auth-page">
+    <main class="auth-container">
+        <h1 data-i18n="registration.heading"></h1>
+
+        <form id="registrationForm" novalidate>
+            <div class="form-field">
+                <label for="email" data-i18n="forms.emailLabel"></label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="254"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="password" data-i18n="forms.passwordLabel"></label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="new-password"
+                    maxlength="72"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="confirmPassword" data-i18n="forms.confirmPasswordLabel"></label>
+                <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    maxlength="72"
+                    required
+                >
+            </div>
+
+            <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+
+            <button
+                id="submitButton"
+                type="submit"
+                data-i18n="registration.submitButton"
+            ></button>
+        </form>
+
+        <p class="auth-link">
+            <span data-i18n="registration.loginPrompt"></span>
+            <a href="./index.html" data-i18n="registration.loginLink"></a>
+        </p>
+    </main>
+
+    <script type="module" src="./scripts/pages/registrationPage.js"></script>
+</body>
+</html>

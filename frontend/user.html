@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div>
+            <h1 data-i18n="user.heading"></h1>
+            <p id="userEmail" class="account-email"></p>
+        </div>
+
+        <button id="logoutButton" class="secondary-button" data-i18n="common.logout"></button>
+    </header>
+
+    <main class="page-container">
+        <section aria-labelledby="promptHeading">
+            <h2 id="promptHeading" data-i18n="user.promptHeading"></h2>
+
+            <form id="promptForm">
+                <div class="form-field">
+                    <label for="prompt" data-i18n="user.promptLabel"></label>
+                    <textarea
+                        id="prompt"
+                        name="prompt"
+                        rows="5"
+                        maxlength="2000"
+                        required
+                        data-i18n-placeholder="user.promptPlaceholder"
+                    ></textarea>
+                </div>
+
+                <button type="submit" data-i18n="user.submitButton"></button>
+            </form>
+        </section>
+
+        <section class="results-section" aria-labelledby="resultsHeading">
+            <h2 id="resultsHeading" data-i18n="user.resultsHeading"></h2>
+            <div id="results" class="provider-results" aria-live="polite"></div>
+        </section>
+
+        <p id="pageMessage" class="form-message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script type="module" src="./scripts/pages/userPage.js"></script>
+</body>
+</html>

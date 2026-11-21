@@ -6,7 +6,15 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --env-file=.env --watch server.js"
+    "dev": "node --env-file=.env --watch server.js",
+    "db:test": "node --env-file=.env scripts/testDatabaseConnection.js",
+    "db:create-demo-accounts": "node --env-file=.env scripts/createDemoAccounts.js",
+    "test": "node --test"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.24.6"
+  }
 }

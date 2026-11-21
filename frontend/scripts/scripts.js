@@ -1,101 +1,117 @@
-import { en } from "../lang/en/en.js";
-
-class ProviderApp {
-    constructor() {
-        this.form = document.getElementById("promptForm");
-        this.promptInput = document.getElementById("prompt");
-        this.submitButton = this.form.querySelector("button");
-        this.resultsContainer = document.getElementById("results");
-
+export class ProviderInterface {
+    constructor({
+        collaborationClient,
+        localization,
+        navigation,
+        form,
+        promptInput,
+        resultsContainer,
+        messageElement
+    }) {
+        this.collaborationClient = collaborationClient;
+        this.localization = localization;
+        this.navigation = navigation;
+        this.form = form;
+        this.promptInput = promptInput;
+        this.submitButton = form.querySelector("button[type='submit']");
+        this.resultsContainer = resultsContainer;
+        this.messageElement = messageElement;
         this.outputs = new Map();
-
-        this.loadLanguage();
-        this.createResultSections();
-
-        this.form.addEventListener(
-            "submit",
-            (event) => this.handleSubmit(event)
-        );
     }
 
-    loadLanguage() {
-        document.title = en.pageTitle;
-
-        document.querySelectorAll("[data-i18n]").forEach(element => {
-            const key = element.dataset.i18n;
-            element.textContent = en[key] ?? "";
-        });
-
-        this.promptInput.placeholder = en.promptPlaceholder;
+    initialize() {
+        this.#createResultSections();
+        this.form.addEventListener("submit", event => this.#handleSubmit(event));
     }
 
-    createResultSections() {
-        for (const [id, name] of Object.entries(en.providers)) {
+    #createResultSections() {
+        const agents = this.localization.language.agents;
+
+        for (const [id, agent] of Object.entries(agents)) {
             const section = document.createElement("section");
             const heading = document.createElement("h3");
+            const provider = document.createElement("p");
             const output = document.createElement("p");
 
-            heading.textContent = name;
-            output.textContent = en.noResponse;
+            section.className = "provider-result";
+            heading.textContent = agent.role;
+            provider.className = "agent-provider";
+            provider.textContent = agent.provider;
+            output.textContent = this.localization.get("user.noResponse");
 
-            section.append(heading, output);
+            section.append(heading, provider, output);
             this.resultsContainer.appendChild(section);
-
             this.outputs.set(id, output);
         }
     }
 
-    showAll(message) {
-        for (const output of this.outputs.values()) {
-            output.textContent = message;
-        }
-    }
-
-    async handleSubmit(event) {
+    async #handleSubmit(event) {
         event.preventDefault();
 
         const prompt = this.promptInput.value.trim();
 
         if (!prompt) {
+            this.#setMessage("validation.promptRequired");
             return;
         }
 
-        this.submitButton.disabled = true;
-        this.showAll(en.generating);
+        this.#setBusy(true);
+        this.#showAll(this.localization.get("user.generating"));
+        this.messageElement.textContent = "";
 
         try {
-            const response = await fetch("/api/dev/providers", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ prompt })
-            });
+            const data = await this.collaborationClient.ask(prompt);
 
-            const data = await response.json();
+            this.#renderAgents(data.agents);
 
-            if (!response.ok) {
-                this.showAll(
-                    en.errors[data.error] ?? en.errors.UNKNOWN
-                );
+            if (data.status === "partial_failure") {
+                this.#setMessage("user.partialFailure");
+            }
+        } catch (error) {
+            if (error.status === 401) {
+                this.navigation.goToLogin("expired");
                 return;
             }
 
-            for (const [name, output] of this.outputs) {
-                const result = data.results?.[name];
-
-                output.textContent = result?.answer ??
-                    en.errors[result?.error] ??
-                    en.errors.UNKNOWN;
+            if (Array.isArray(error.details?.agents)) {
+                this.#renderAgents(error.details.agents);
+                this.#setMessage("user.allProvidersFailed");
+            } else {
+                this.#showAll(this.localization.getError(error.code));
             }
-
-        } catch {
-            this.showAll(en.errors.NETWORK_ERROR);
-
         } finally {
-            this.submitButton.disabled = false;
+            this.#setBusy(false);
         }
     }
-}
 
-new ProviderApp();
+    #renderAgents(agents) {
+        const results = new Map(
+            (agents ?? []).map(agent => [agent.id, agent])
+        );
+
+        for (const [id, output] of this.outputs) {
+            const result = results.get(id);
+
+            output.textContent = result?.status === "success"
+                ? result.answer
+                : this.localization.getError(
+                    result?.error ?? "PROVIDER_FAILED"
+                );
+        }
+    }
+
+    #showAll(message) {
+        for (const output of this.outputs.values()) {
+            output.textContent = message;
+        }
+    }
+
+    #setMessage(key) {
+        this.messageElement.textContent = this.localization.get(key);
+    }
+
+    #setBusy(isBusy) {
+        this.submitButton.disabled = isBusy;
+        this.promptInput.disabled = isBusy;
+    }
+}

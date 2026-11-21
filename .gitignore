@@ -2,3 +2,22 @@ node_modules/
 .env
 .env.*
 !.env.example
+
+# Test and runtime output
+backend/test/
+frontend/test/
+coverage/
+.nyc_output/
+*.log
+*.pid
+backend/scripts/
+
+# Temporary and editor files
+tmp/
+temp/
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

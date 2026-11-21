@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div>
+            <h1 data-i18n="admin.heading"></h1>
+            <p id="adminEmail" class="account-email"></p>
+        </div>
+
+        <button id="logoutButton" class="secondary-button" data-i18n="common.logout"></button>
+    </header>
+
+    <main class="page-container">
+        <section aria-labelledby="usersHeading">
+            <h2 id="usersHeading" data-i18n="admin.usersHeading"></h2>
+
+            <p id="usersStatus" class="form-message" role="status" aria-live="polite"></p>
+
+            <div id="usersTableContainer" class="table-container" hidden>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col" data-i18n="admin.emailColumn"></th>
+                            <th scope="col" data-i18n="admin.roleColumn"></th>
+                            <th scope="col" data-i18n="admin.createdColumn"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="./scripts/pages/adminPage.js"></script>
+</body>
+</html>
