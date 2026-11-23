@@ -40,7 +40,9 @@ export class CollaborationOrchestrator {
             discussion: [],
             finalVotes: []
         };
-        const noConsensus = this.consensusService.tally(candidates, []);
+        const noConsensus = this.consensusService.tally(candidates, [], {
+            voterCount: 0
+        });
 
         if (successfulInitialAgents.length < 3) {
             return this.#result({
@@ -133,11 +135,62 @@ export class CollaborationOrchestrator {
         const votes = discussions.map(item =>
             voteByAgent.get(item.agent.id) ?? null
         );
-        const consensus = this.consensusService.tally(candidates, votes);
+        const voterCount = discussions.length;
+        let consensus = this.consensusService.tally(candidates, votes, {
+            voterCount
+        });
         history.finalVotes = discussions.map(item => ({
             id: item.agent.id,
             candidateId: voteByAgent.get(item.agent.id) ?? null
         }));
+
+        // No majority on the first ballot (e.g. 2-2-1 between answers that
+        // all say the same thing): hold one runoff between the leaders.
+        const finalists = consensus.consensusReached
+            ? []
+            : this.consensusService.runoffFinalists(
+                candidates,
+                consensus.votes
+            );
+
+        if (finalists.length > 0) {
+            const runoffContext = [
+                voteContext,
+                "First-round vote counts:",
+                ...Object.entries(consensus.votes).map(([id, count]) =>
+                    `${id}: ${count}`
+                ),
+                "Runoff candidates (choose one of these only):",
+                ...finalists.map(candidate =>
+                    `${candidate.id}: ${candidate.answer}`
+                )
+            ].join("\n\n");
+            const runoffResponses = await this.#runPhase(
+                discussions.map(item => item.agent),
+                "runoff",
+                runoffContext
+            );
+            const runoffByAgent = new Map(
+                runoffResponses.map(item => [
+                    item.agent.id,
+                    this.consensusService.parseVote(item.response, finalists)
+                ])
+            );
+            const runoffVotes = discussions.map(item =>
+                runoffByAgent.get(item.agent.id) ?? null
+            );
+            consensus = {
+                ...this.consensusService.tally(candidates, runoffVotes, {
+                    voterCount
+                }),
+                runoff: true,
+                firstRoundVotes: consensus.votes
+            };
+            history.runoffVotes = discussions.map(item => ({
+                id: item.agent.id,
+                candidateId: runoffByAgent.get(item.agent.id) ?? null
+            }));
+        }
 
         return this.#result({
             agents,
@@ -187,9 +240,9 @@ export class CollaborationOrchestrator {
     #formatCandidates(prompt, candidates) {
         return [
             `User question: ${prompt}`,
-            "Initial candidate answers:",
+            "Initial candidate answers (authors are hidden so each answer is judged on its merits):",
             ...candidates.map(candidate =>
-                `${candidate.id} (from ${candidate.agentIds.join(", ")}): ${candidate.answer}`
+                `${candidate.id}: ${candidate.answer}`
             )
         ].join("\n\n");
     }

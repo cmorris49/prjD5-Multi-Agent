@@ -64,6 +64,12 @@ const PHASE_INSTRUCTIONS = Object.freeze({
     ].join(" "),
     vote: [
         "Choose the single candidate that best answers the user's question.",
+        "Several candidates may say essentially the same thing; pick the clearest and most complete one.",
+        "Return only its exact candidate ID, such as C1. Do not include an explanation."
+    ].join(" "),
+    runoff: [
+        "No candidate won a majority, so this is a runoff between the listed runoff candidates.",
+        "Choose the single runoff candidate that best answers the user's question.",
         "Return only its exact candidate ID, such as C1. Do not include an explanation."
     ].join(" ")
 });
