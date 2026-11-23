@@ -3,7 +3,7 @@ export class CookieService {
         name = process.env.AUTH_COOKIE_NAME || "auth_session",
         maxAgeSeconds = Number(process.env.JWT_TTL_SECONDS || 3600),
         sameSite = process.env.AUTH_COOKIE_SAME_SITE || "lax",
-        secure = CookieService.getDefaultSecureSetting()
+        secure = true
     } = {}) {
         this.name = name.trim();
         this.maxAgeSeconds = maxAgeSeconds;
@@ -55,14 +55,6 @@ export class CookieService {
         return this.#serialize("", 0);
     }
 
-    static getDefaultSecureSetting() {
-        if (process.env.AUTH_COOKIE_SECURE !== undefined) {
-            return process.env.AUTH_COOKIE_SECURE === "true";
-        }
-
-        return process.env.NODE_ENV === "production";
-    }
-
     #serialize(value, maxAgeSeconds) {
         const attributes = [
             `${this.name}=${value}`,
@@ -110,8 +102,8 @@ export class CookieService {
             throw new Error("SameSite=None cookies must also be Secure.");
         }
 
-        if (process.env.NODE_ENV === "production" && !this.secure) {
-            throw new Error("Authentication cookies must be Secure in production.");
+        if (!this.secure) {
+            throw new Error("Authentication cookies must be Secure.");
         }
     }
 }

@@ -1,7 +1,7 @@
 import { HttpError } from "../errors/HttpError.js";
 
 export class CorsPolicy {
-    constructor(allowedOrigins = process.env.CORS_ALLOWED_ORIGINS || "") {
+    constructor(allowedOrigins = "https://cmorris.xyz") {
         this.allowedOrigins = new Set(
             allowedOrigins
                 .split(",")

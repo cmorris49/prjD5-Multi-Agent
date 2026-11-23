@@ -1,5 +1,4 @@
 import http from "node:http";
-import { readFile } from "node:fs/promises";
 import { AuthController } from "./controllers/AuthController.js";
 import { CollaborationController } from "./controllers/CollaborationController.js";
 import { Database } from "./database/Database.js";
@@ -22,97 +21,6 @@ import { ProviderService } from "./services/providerService.js";
 const PORT = Number(process.env.PORT || 3000);
 const MAX_BODY_SIZE = 10000;
 const MAX_PROMPT_LENGTH = 2000;
-
-const STATIC_FILES = new Map([
-    ["/", {
-        file: new URL("../frontend/index.html", import.meta.url),
-        type: "text/html; charset=utf-8"
-    }],
-    ["/index.html", {
-        file: new URL("../frontend/index.html", import.meta.url),
-        type: "text/html; charset=utf-8"
-    }],
-    ["/register.html", {
-        file: new URL("../frontend/register.html", import.meta.url),
-        type: "text/html; charset=utf-8"
-    }],
-    ["/user.html", {
-        file: new URL("../frontend/user.html", import.meta.url),
-        type: "text/html; charset=utf-8"
-    }],
-    ["/admin.html", {
-        file: new URL("../frontend/admin.html", import.meta.url),
-        type: "text/html; charset=utf-8"
-    }],
-    ["/css/styles.css", {
-        file: new URL("../frontend/css/styles.css", import.meta.url),
-        type: "text/css; charset=utf-8"
-    }],
-    ["/scripts/scripts.js", {
-        file: new URL("../frontend/scripts/scripts.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/ApiClient.js", {
-        file: new URL("../frontend/scripts/ApiClient.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/AuthenticationClient.js", {
-        file: new URL("../frontend/scripts/AuthenticationClient.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/CollaborationClient.js", {
-        file: new URL("../frontend/scripts/CollaborationClient.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/config.js", {
-        file: new URL("../frontend/scripts/config.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/FormValidator.js", {
-        file: new URL("../frontend/scripts/FormValidator.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/FrontendServices.js", {
-        file: new URL("../frontend/scripts/FrontendServices.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/LocalizationService.js", {
-        file: new URL("../frontend/scripts/LocalizationService.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/LogoutController.js", {
-        file: new URL("../frontend/scripts/LogoutController.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/NavigationService.js", {
-        file: new URL("../frontend/scripts/NavigationService.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/SessionService.js", {
-        file: new URL("../frontend/scripts/SessionService.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/pages/loginPage.js", {
-        file: new URL("../frontend/scripts/pages/loginPage.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/pages/registrationPage.js", {
-        file: new URL("../frontend/scripts/pages/registrationPage.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/pages/userPage.js", {
-        file: new URL("../frontend/scripts/pages/userPage.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/scripts/pages/adminPage.js", {
-        file: new URL("../frontend/scripts/pages/adminPage.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }],
-    ["/lang/en/en.js", {
-        file: new URL("../frontend/lang/en/en.js", import.meta.url),
-        type: "text/javascript; charset=utf-8"
-    }]
-]);
 
 class ApiServer {
     constructor({
@@ -171,7 +79,7 @@ class ApiServer {
     }
 
     async handleRequest(req, res) {
-        const pathname = new URL(req.url, "http://localhost").pathname;
+        const pathname = new URL(req.url, "https://api.cmorris.xyz").pathname;
 
         try {
             if (pathname.startsWith("/api/")) {
@@ -183,20 +91,11 @@ class ApiServer {
                 }
             }
 
-            if (req.method === "GET" && pathname === "/health") {
+            if (
+                req.method === "GET" &&
+                ["/", "/health"].includes(pathname)
+            ) {
                 return this.sendJson(res, 200, { status: "ok" });
-            }
-
-            if (req.method === "GET" && STATIC_FILES.has(pathname)) {
-                const resource = STATIC_FILES.get(pathname);
-                const file = await readFile(resource.file);
-
-                res.writeHead(200, {
-                    "Content-Type": resource.type,
-                    "X-Content-Type-Options": "nosniff"
-                });
-
-                return res.end(file);
             }
 
             const authResult = await this.#handleAuthRequest(req, pathname);
@@ -223,35 +122,6 @@ class ApiServer {
                     result.body,
                     result.headers
                 );
-            }
-
-            if (req.method === "POST" &&
-                pathname === "/api/dev/providers") {
-
-                if (
-                    process.env.NODE_ENV === "production" ||
-                    process.env.ENABLE_DEV_ENDPOINT !== "true"
-                ) {
-                    return this.sendJson(res, 404, {
-                        error: "NOT_FOUND"
-                    });
-                }
-
-                const body = await this.readJson(req);
-                const prompt = body?.prompt;
-
-                if (typeof prompt !== "string" ||
-                    !prompt.trim() ||
-                    prompt.length > MAX_PROMPT_LENGTH) {
-
-                    throw new HttpError(400, "INVALID_PROMPT");
-                }
-
-                const results = await this.providerService.askAll(
-                    prompt.trim()
-                );
-
-                return this.sendJson(res, 200, { results });
             }
 
             return this.sendJson(res, 404, {
@@ -358,7 +228,7 @@ class ApiServer {
 
     start() {
         this.server.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`);
+            console.log(`Server running on port ${PORT}.`);
         });
 
         process.once("SIGINT", () => this.stop("SIGINT"));
