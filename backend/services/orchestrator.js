@@ -22,7 +22,7 @@ export class CollaborationOrchestrator {
                     id: agent.id,
                     provider: agent.provider,
                     status: "failed",
-                    error: "PROVIDER_FAILED"
+                    error: result?.error ?? "PROVIDER_FAILED"
                 };
         });
         const candidates = this.consensusService.createCandidates(agents);

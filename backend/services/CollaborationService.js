@@ -47,8 +47,11 @@ export class CollaborationService {
                     answer
                 }]
             };
-        } catch {
-            console.error(`${agent.resultKey} provider failed.`);
+        } catch (error) {
+            const errorCode = this.providerService.describeFailure(
+                agent.resultKey,
+                error
+            );
 
             return {
                 mode: "single",
@@ -57,7 +60,7 @@ export class CollaborationService {
                     id: agent.id,
                     provider: agent.provider,
                     status: "failed",
-                    error: "PROVIDER_FAILED"
+                    error: errorCode
                 }]
             };
         }

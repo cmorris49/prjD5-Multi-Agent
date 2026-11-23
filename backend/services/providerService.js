@@ -3,6 +3,7 @@ import { AnthropicProvider } from "./providers/anthropic.js";
 import { DeepSeekProvider } from "./providers/deepseek.js";
 import { GeminiProvider } from "./providers/gemini.js";
 import { MistralProvider } from "./providers/mistral.js";
+import { ProviderError } from "./providers/baseProvider.js";
 import { AgentCatalog } from "./agents.js";
 
 export class ProviderService {
@@ -36,10 +37,13 @@ export class ProviderService {
                     }];
                 }
 
-                console.error(`${name} provider failed.`);
+                const errorCode = this.describeFailure(
+                    name,
+                    response.reason
+                );
 
                 return [name, {
-                    error: "PROVIDER_FAILED"
+                    error: errorCode
                 }];
             })
         );
@@ -53,5 +57,29 @@ export class ProviderService {
         }
 
         return provider.generate(prompt);
+    }
+
+    describeFailure(name, error) {
+        const isProviderError = error instanceof ProviderError;
+        const code = isProviderError ? error.code : "PROVIDER_FAILED";
+        const details = [code];
+
+        if (isProviderError && error.status !== null) {
+            details.push(`HTTP ${error.status}`);
+        }
+
+        if (isProviderError && error.requestId) {
+            details.push(`request ${error.requestId}`);
+        }
+
+        const message = error instanceof Error
+            ? error.message
+            : "Unknown provider error.";
+
+        console.error(
+            `${name} provider failed (${details.join(", ")}): ${message}`
+        );
+
+        return code;
     }
 }

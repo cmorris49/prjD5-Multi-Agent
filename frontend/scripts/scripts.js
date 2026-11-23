@@ -97,10 +97,20 @@ export class ProviderInterface {
             }
 
             if (Array.isArray(error.details?.agents)) {
-                this.#renderAgents(error.details.agents);
+                const agents = error.details.agents;
+
+                this.#renderAgents(agents);
                 this.consensusElement.textContent = "";
                 this.consensusElement.classList.remove("success");
-                this.#setMessage("user.allProvidersFailed");
+
+                if (error.details.mode === "single" && agents.length === 1) {
+                    this.messageElement.textContent =
+                        this.localization.getError(
+                            agents[0].error ?? "PROVIDER_FAILED"
+                        );
+                } else {
+                    this.#setMessage("user.allProvidersFailed");
+                }
             } else {
                 this.#showAll(this.localization.getError(error.code));
                 this.consensusElement.textContent = "";

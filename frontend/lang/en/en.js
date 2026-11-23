@@ -107,6 +107,14 @@ export const en = {
 
     errors: {
         PROVIDER_FAILED: "This agent could not respond.",
+        PROVIDER_CONFIGURATION_ERROR: "This agent is not configured correctly.",
+        PROVIDER_AUTHENTICATION_ERROR: "This agent's provider credentials need attention.",
+        PROVIDER_BILLING_ERROR: "This agent's provider account needs attention.",
+        PROVIDER_RATE_LIMITED: "This agent is temporarily rate limited. Try again shortly.",
+        PROVIDER_TIMEOUT: "This agent did not respond in time. Please try again.",
+        PROVIDER_NETWORK_ERROR: "The server could not reach this agent's provider.",
+        PROVIDER_UNAVAILABLE: "This agent's provider is temporarily unavailable.",
+        PROVIDER_INVALID_RESPONSE: "This agent returned an unusable response.",
         ALL_PROVIDERS_FAILED: "No agents could respond. Please try again later.",
         INVALID_PROMPT: "Please enter a valid prompt of up to 2000 characters.",
         INVALID_MODE: "Choose a valid response mode.",
