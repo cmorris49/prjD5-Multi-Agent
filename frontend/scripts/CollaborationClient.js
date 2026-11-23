@@ -3,10 +3,10 @@ export class CollaborationClient {
         this.apiClient = apiClient;
     }
 
-    async ask(prompt) {
+    async ask(prompt, options = {}) {
         return this.apiClient.request("/api/collab/ask", {
             method: "POST",
-            body: { prompt }
+            body: { prompt, ...options }
         });
     }
 }

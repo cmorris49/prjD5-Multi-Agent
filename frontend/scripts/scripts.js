@@ -5,7 +5,10 @@ export class ProviderInterface {
         navigation,
         form,
         promptInput,
+        modeInput,
+        agentInput,
         resultsContainer,
+        consensusElement,
         messageElement
     }) {
         this.collaborationClient = collaborationClient;
@@ -13,15 +16,28 @@ export class ProviderInterface {
         this.navigation = navigation;
         this.form = form;
         this.promptInput = promptInput;
+        this.modeInput = modeInput;
+        this.agentInput = agentInput;
         this.submitButton = form.querySelector("button[type='submit']");
         this.resultsContainer = resultsContainer;
+        this.consensusElement = consensusElement;
         this.messageElement = messageElement;
         this.outputs = new Map();
     }
 
     initialize() {
         this.#createResultSections();
+        this.modeInput.addEventListener("change", () =>
+            this.#syncAgentSelection()
+        );
+        this.#syncAgentSelection();
         this.form.addEventListener("submit", event => this.#handleSubmit(event));
+    }
+
+    #syncAgentSelection() {
+        const isSingleMode = this.modeInput.value === "single";
+        this.agentInput.disabled = !isSingleMode;
+        this.agentInput.parentElement.hidden = !isSingleMode;
     }
 
     #createResultSections() {
@@ -57,12 +73,19 @@ export class ProviderInterface {
 
         this.#setBusy(true);
         this.#showAll(this.localization.get("user.generating"));
+        this.consensusElement.textContent = "";
+        this.consensusElement.classList.remove("success");
         this.messageElement.textContent = "";
 
         try {
-            const data = await this.collaborationClient.ask(prompt);
+            const mode = this.modeInput.value;
+            const data = await this.collaborationClient.ask(prompt, {
+                mode,
+                ...(mode === "single" ? { agent: this.agentInput.value } : {})
+            });
 
             this.#renderAgents(data.agents);
+            this.#renderConsensus(data);
 
             if (data.status === "partial_failure") {
                 this.#setMessage("user.partialFailure");
@@ -75,9 +98,13 @@ export class ProviderInterface {
 
             if (Array.isArray(error.details?.agents)) {
                 this.#renderAgents(error.details.agents);
+                this.consensusElement.textContent = "";
+                this.consensusElement.classList.remove("success");
                 this.#setMessage("user.allProvidersFailed");
             } else {
                 this.#showAll(this.localization.getError(error.code));
+                this.consensusElement.textContent = "";
+                this.consensusElement.classList.remove("success");
             }
         } finally {
             this.#setBusy(false);
@@ -92,12 +119,44 @@ export class ProviderInterface {
         for (const [id, output] of this.outputs) {
             const result = results.get(id);
 
-            output.textContent = result?.status === "success"
-                ? result.answer
-                : this.localization.getError(
-                    result?.error ?? "PROVIDER_FAILED"
+            if (result?.status === "success") {
+                output.textContent = result.answer;
+            } else if (result?.status === "not_requested" || !result) {
+                output.textContent = this.localization.get("user.notSelected");
+            } else {
+                output.textContent = this.localization.getError(
+                    result.error ?? "PROVIDER_FAILED"
                 );
+            }
         }
+    }
+
+    #renderConsensus(data) {
+        if (data.mode !== "consensus") {
+            this.consensusElement.textContent = "";
+            this.consensusElement.classList.remove("success");
+            return;
+        }
+
+        const counts = Object.entries(data.votes ?? {})
+            .map(([candidate, votes]) => `${candidate}: ${votes}`)
+            .join(", ");
+        const countLabel = this.localization.get("user.voteCount")
+            .replace("{counts}", counts);
+
+        if (!data.consensusReached) {
+            this.consensusElement.textContent =
+                `${this.localization.get("user.noConsensus")} ${countLabel}`;
+            this.consensusElement.classList.remove("success");
+            return;
+        }
+
+        const prefix = this.localization.get("user.consensusReached")
+            .replace("{votes}", String(data.votes[data.winningCandidate]));
+
+        this.consensusElement.textContent =
+            `${prefix}${data.answer} ${countLabel}`;
+        this.consensusElement.classList.add("success");
     }
 
     #showAll(message) {

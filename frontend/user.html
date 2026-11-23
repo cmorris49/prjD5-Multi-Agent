@@ -22,6 +22,25 @@
 
             <form id="promptForm">
                 <div class="form-field">
+                    <label for="responseMode" data-i18n="user.modeLabel"></label>
+                    <select id="responseMode" name="mode">
+                        <option value="consensus" data-i18n="user.consensusMode"></option>
+                        <option value="single" data-i18n="user.singleMode"></option>
+                    </select>
+                </div>
+
+                <div id="agentField" class="form-field">
+                    <label for="agent" data-i18n="user.agentLabel"></label>
+                    <select id="agent" name="agent">
+                        <option value="optimist" data-i18n="agents.optimist.role"></option>
+                        <option value="skeptic" data-i18n="agents.skeptic.role"></option>
+                        <option value="logical_analyst" data-i18n="agents.logical_analyst.role"></option>
+                        <option value="creative_thinker" data-i18n="agents.creative_thinker.role"></option>
+                        <option value="pragmatist" data-i18n="agents.pragmatist.role"></option>
+                    </select>
+                </div>
+
+                <div class="form-field">
                     <label for="prompt" data-i18n="user.promptLabel"></label>
                     <textarea
                         id="prompt"
@@ -40,6 +59,7 @@
         <section class="results-section" aria-labelledby="resultsHeading">
             <h2 id="resultsHeading" data-i18n="user.resultsHeading"></h2>
             <div id="results" class="provider-results" aria-live="polite"></div>
+            <p id="consensusResult" class="form-message" aria-live="polite"></p>
         </section>
 
         <p id="pageMessage" class="form-message" role="status" aria-live="polite"></p>

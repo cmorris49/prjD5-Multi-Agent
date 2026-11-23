@@ -38,12 +38,20 @@ export const en = {
         promptHeading: "Ask the agents",
         promptLabel: "Prompt",
         promptPlaceholder: "Enter a question or topic",
+        modeLabel: "Response mode",
+        consensusMode: "Consensus (all agents)",
+        singleMode: "Single agent",
+        agentLabel: "Choose an agent",
         submitButton: "Submit prompt",
         resultsHeading: "Agent responses",
         noResponse: "No response yet.",
+        notSelected: "Not selected for this request.",
         generating: "Generating responses...",
         partialFailure: "Some agents could not respond.",
-        allProvidersFailed: "No agents could respond. Please try again later."
+        allProvidersFailed: "No agents could respond. Please try again later.",
+        consensusReached: "Consensus reached ({votes} votes): ",
+        noConsensus: "The agents did not reach a majority consensus.",
+        voteCount: "Votes: {counts}"
     },
 
     admin: {
@@ -101,6 +109,9 @@ export const en = {
         PROVIDER_FAILED: "This agent could not respond.",
         ALL_PROVIDERS_FAILED: "No agents could respond. Please try again later.",
         INVALID_PROMPT: "Please enter a valid prompt of up to 2000 characters.",
+        INVALID_MODE: "Choose a valid response mode.",
+        INVALID_AGENT: "Choose a valid agent for single-agent mode.",
+        INVALID_INCLUDE_HISTORY: "The includeHistory option must be true or false.",
         INVALID_EMAIL: "Enter a valid email address.",
         INVALID_PASSWORD: "Enter a valid password.",
         WEAK_PASSWORD: "Use at least 8 characters with a letter and a number.",

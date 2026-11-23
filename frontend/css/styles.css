@@ -39,7 +39,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
     font: inherit;
 }
 
@@ -60,6 +61,7 @@ button:hover:not(:disabled) {
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
+select:focus-visible,
 a:focus-visible {
     outline: 3px solid #8ab4f8;
     outline-offset: 2px;
@@ -107,7 +109,8 @@ button:disabled {
 }
 
 .form-field input,
-.form-field textarea {
+.form-field textarea,
+.form-field select {
     width: 100%;
     padding: 0.7rem;
     border: 1px solid #9da8b8;

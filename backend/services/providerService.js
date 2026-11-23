@@ -44,4 +44,14 @@ export class ProviderService {
             })
         );
     }
+
+    async askAgent(agent, prompt) {
+        const provider = this.providers[agent.resultKey];
+
+        if (!provider) {
+            throw new Error(`Provider is unavailable for agent ${agent.id}.`);
+        }
+
+        return provider.generate(prompt);
+    }
 }

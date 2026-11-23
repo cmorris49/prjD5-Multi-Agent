@@ -48,7 +48,10 @@ class UserPage {
             navigation: this.services.navigation,
             form: document.getElementById("promptForm"),
             promptInput: document.getElementById("prompt"),
+            modeInput: document.getElementById("responseMode"),
+            agentInput: document.getElementById("agent"),
             resultsContainer: document.getElementById("results"),
+            consensusElement: document.getElementById("consensusResult"),
             messageElement: this.messageElement
         });
 
