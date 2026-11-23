@@ -18,7 +18,7 @@ export class OpenAIProvider extends BaseProvider {
             {
                 model: this.model,
                 input: prompt,
-                max_output_tokens: 300
+                max_output_tokens: 2000
             }
         );
 

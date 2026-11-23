@@ -27,7 +27,7 @@ export class GeminiProvider extends BaseProvider {
                     }
                 ],
                 generationConfig: {
-                    maxOutputTokens: 300
+                    maxOutputTokens: 2000
                 }
             }
         );
