@@ -1,3 +1,4 @@
+// Handles HTTP requests for user registration, login, logout, and authentication checks.
 export class AuthController {
     constructor({
         authenticationService,

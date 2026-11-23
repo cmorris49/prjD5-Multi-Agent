@@ -1,3 +1,4 @@
+// Wraps the backend collaboration and provider endpoints for the frontend.
 export class CollaborationClient {
     constructor(apiClient) {
         this.apiClient = apiClient;

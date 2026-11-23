@@ -1,3 +1,4 @@
+// Converts agent Markdown responses into safe HTML for display in the interface.
 // Small, dependency-free Markdown renderer for agent answers.
 // All text is HTML-escaped before any formatting is applied, so model
 // output can never inject markup. Supports the subset models actually use:

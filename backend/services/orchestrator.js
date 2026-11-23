@@ -1,3 +1,4 @@
+// Runs the multi-agent response and voting workflow through its collaboration phases.
 export class CollaborationOrchestrator {
     constructor(providerService, agentCatalog, consensusService) {
         this.providerService = providerService;

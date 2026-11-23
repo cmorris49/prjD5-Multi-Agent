@@ -1,3 +1,4 @@
+// Implements the Mistral API adapter for generating agent responses.
 import { BaseProvider } from "./baseProvider.js";
 
 export class MistralProvider extends BaseProvider {

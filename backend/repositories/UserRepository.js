@@ -1,3 +1,4 @@
+// Provides database operations for creating, finding, and listing user accounts.
 export class UserRepository {
     constructor(database) {
         this.database = database;

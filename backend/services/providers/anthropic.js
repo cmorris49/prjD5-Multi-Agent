@@ -1,3 +1,4 @@
+// Implements the Anthropic API adapter for generating agent responses.
 import { BaseProvider } from "./baseProvider.js";
 
 export class AnthropicProvider extends BaseProvider {

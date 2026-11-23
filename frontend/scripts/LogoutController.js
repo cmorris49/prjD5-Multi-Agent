@@ -1,3 +1,4 @@
+// Handles logout button interactions, status messages, and navigation after logout.
 export class LogoutController {
     constructor({
         button,

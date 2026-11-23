@@ -1,3 +1,4 @@
+// Loads the current session and enforces authentication and role requirements on pages.
 import { ApiError } from "./ApiClient.js";
 
 export class SessionService {

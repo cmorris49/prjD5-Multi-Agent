@@ -1,3 +1,4 @@
+-- Creates the users table and its supporting indexes when they do not already exist.
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     email VARCHAR(254) NOT NULL,

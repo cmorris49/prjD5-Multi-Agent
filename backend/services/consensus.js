@@ -1,3 +1,4 @@
+// Selects and summarizes consensus from the collaborating agents' responses and votes.
 export class ConsensusService {
     createCandidates(initialResponses) {
         const candidates = new Map();

@@ -1,3 +1,4 @@
+// Authenticates incoming requests by validating session cookies and loading their users.
 import { HttpError } from "../../errors/HttpError.js";
 
 export class AuthenticationGuard {

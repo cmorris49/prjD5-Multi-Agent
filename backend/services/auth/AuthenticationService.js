@@ -1,3 +1,4 @@
+// Implements user registration and login by coordinating validation, hashing, storage, and tokens.
 import { HttpError } from "../../errors/HttpError.js";
 
 export class AuthenticationService {

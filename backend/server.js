@@ -1,3 +1,4 @@
+// Configures the application services and runs the backend HTTP server.
 import http from "node:http";
 import { AuthController } from "./controllers/AuthController.js";
 import { CollaborationController } from "./controllers/CollaborationController.js";

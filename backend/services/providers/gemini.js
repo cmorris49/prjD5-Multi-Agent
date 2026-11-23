@@ -1,3 +1,4 @@
+// Implements the Gemini API adapter for generating agent responses.
 import { BaseProvider } from "./baseProvider.js";
 
 export class GeminiProvider extends BaseProvider {

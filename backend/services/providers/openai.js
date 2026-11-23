@@ -1,3 +1,4 @@
+// Implements the OpenAI API adapter for generating agent responses.
 import { BaseProvider } from "./baseProvider.js";
 
 export class OpenAIProvider extends BaseProvider {

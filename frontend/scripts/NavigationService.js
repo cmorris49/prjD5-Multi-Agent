@@ -1,3 +1,4 @@
+// Centralizes frontend navigation between login, registration, user, and admin pages.
 export class NavigationService {
     constructor(locationObject = window.location) {
         this.location = locationObject;

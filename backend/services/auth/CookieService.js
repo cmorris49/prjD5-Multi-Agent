@@ -1,3 +1,4 @@
+// Creates, reads, and clears the authentication session cookie.
 export class CookieService {
     constructor({
         name = process.env.AUTH_COOKIE_NAME || "auth_session",

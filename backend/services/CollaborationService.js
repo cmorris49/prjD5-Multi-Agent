@@ -1,3 +1,4 @@
+// Coordinates provider responses, agent roles, orchestration, and consensus generation.
 import { ConsensusService } from "./consensus.js";
 import { CollaborationOrchestrator } from "./orchestrator.js";
 

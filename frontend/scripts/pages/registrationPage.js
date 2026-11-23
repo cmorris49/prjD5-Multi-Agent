@@ -1,3 +1,4 @@
+// Initializes the registration page and handles account creation and form validation.
 import { FrontendServices } from "../FrontendServices.js";
 import { en } from "../../lang/en/en.js";
 

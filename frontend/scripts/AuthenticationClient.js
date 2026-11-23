@@ -1,3 +1,4 @@
+// Wraps the backend authentication endpoints for the frontend.
 export class AuthenticationClient {
     constructor(apiClient) {
         this.apiClient = apiClient;

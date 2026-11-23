@@ -1,3 +1,4 @@
+// Enforces role-based access requirements for authenticated users.
 import { HttpError } from "../../errors/HttpError.js";
 
 export class AuthorizationService {

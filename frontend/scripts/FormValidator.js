@@ -1,3 +1,4 @@
+// Validates frontend email, password, and password-confirmation form values.
 export class FormValidator {
     validateEmail(value) {
         const email = typeof value === "string" ? value.trim() : "";

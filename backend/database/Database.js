@@ -1,3 +1,4 @@
+// Manages the MySQL connection pool and database queries for the backend.
 import mysql from "mysql2/promise";
 
 export class Database {

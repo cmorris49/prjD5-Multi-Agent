@@ -1,3 +1,4 @@
+// Initializes the user collaboration page, provider controls, session checks, and logout behavior.
 import { FrontendServices } from "../FrontendServices.js";
 import { LogoutController } from "../LogoutController.js";
 import { ProviderInterface } from "../scripts.js";

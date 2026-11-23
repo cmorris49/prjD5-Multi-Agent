@@ -1,3 +1,4 @@
+// Validates request origins and supplies the backend's CORS response headers.
 import { HttpError } from "../errors/HttpError.js";
 
 export class CorsPolicy {

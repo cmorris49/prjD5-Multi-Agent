@@ -1,3 +1,4 @@
+// Implements the DeepSeek API adapter for generating agent responses.
 import { BaseProvider } from "./baseProvider.js";
 
 export class DeepSeekProvider extends BaseProvider {
@@ -23,7 +24,7 @@ export class DeepSeekProvider extends BaseProvider {
                         content: prompt
                     }
                 ],
-                max_tokens: 2000
+                max_tokens: 4000
             }
         );
 

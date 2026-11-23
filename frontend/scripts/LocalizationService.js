@@ -1,3 +1,4 @@
+// Applies localized text and attributes to marked elements in the document.
 export class LocalizationService {
     constructor(language, documentObject = document) {
         this.language = language;

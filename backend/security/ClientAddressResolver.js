@@ -1,3 +1,4 @@
+// Resolves a request's client IP address with optional trusted-proxy support.
 export class ClientAddressResolver {
     constructor(trustProxy = process.env.TRUST_PROXY === "true") {
         this.trustProxy = trustProxy;

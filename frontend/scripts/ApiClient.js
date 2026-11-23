@@ -1,3 +1,4 @@
+// Provides a shared HTTP client and normalized API errors for frontend requests.
 export class ApiError extends Error {
     constructor(status, code, details = null) {
         super(code);

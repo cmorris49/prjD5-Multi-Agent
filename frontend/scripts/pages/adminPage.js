@@ -1,3 +1,4 @@
+// Initializes the administrator page, session checks, user list, localization, and logout behavior.
 import { ApiError } from "../ApiClient.js";
 import { FrontendServices } from "../FrontendServices.js";
 import { LogoutController } from "../LogoutController.js";

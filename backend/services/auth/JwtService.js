@@ -1,3 +1,4 @@
+// Signs and verifies JSON Web Tokens used for authenticated sessions.
 import jwt from "jsonwebtoken";
 import { HttpError } from "../../errors/HttpError.js";
 

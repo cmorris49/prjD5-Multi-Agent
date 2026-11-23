@@ -1,3 +1,4 @@
+// Constructs and exposes the shared service clients used by frontend pages.
 import { ApiClient } from "./ApiClient.js";
 import { AuthenticationClient } from "./AuthenticationClient.js";
 import { CollaborationClient } from "./CollaborationClient.js";

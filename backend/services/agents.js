@@ -1,3 +1,4 @@
+// Defines the available collaboration agents and exposes agent lookup helpers.
 const AGENTS = Object.freeze([
     Object.freeze({
         id: "optimist",

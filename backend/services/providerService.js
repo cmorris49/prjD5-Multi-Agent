@@ -1,3 +1,4 @@
+// Registers AI providers and routes prompts to the requested provider implementation.
 import { OpenAIProvider } from "./providers/openai.js";
 import { AnthropicProvider } from "./providers/anthropic.js";
 import { DeepSeekProvider } from "./providers/deepseek.js";

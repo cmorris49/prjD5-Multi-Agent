@@ -1,3 +1,4 @@
+// Validates and normalizes authentication inputs such as email addresses and passwords.
 import { HttpError } from "../../errors/HttpError.js";
 
 export class AuthValidator {

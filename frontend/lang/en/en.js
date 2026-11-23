@@ -1,3 +1,4 @@
+// Defines the English interface text used throughout the frontend.
 export const en = {
     locale: "en-CA",
 

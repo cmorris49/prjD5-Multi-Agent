@@ -1,3 +1,4 @@
+// Handles HTTP requests for multi-agent collaboration and provider availability.
 import { HttpError } from "../errors/HttpError.js";
 
 export class CollaborationController {

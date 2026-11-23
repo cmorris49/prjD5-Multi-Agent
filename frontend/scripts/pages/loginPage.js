@@ -1,3 +1,4 @@
+// Initializes the login page and handles credential submission and validation.
 import { FrontendServices } from "../FrontendServices.js";
 import { en } from "../../lang/en/en.js";
 

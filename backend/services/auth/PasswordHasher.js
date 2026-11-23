@@ -1,3 +1,4 @@
+// Hashes passwords and verifies submitted passwords with bcrypt.
 import bcrypt from "bcryptjs";
 
 export class PasswordHasher {

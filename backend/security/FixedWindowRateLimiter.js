@@ -1,3 +1,4 @@
+// Limits repeated actions per key within a fixed time window.
 import { HttpError } from "../errors/HttpError.js";
 
 export class FixedWindowRateLimiter {

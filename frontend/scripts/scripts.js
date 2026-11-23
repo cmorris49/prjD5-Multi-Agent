@@ -1,3 +1,4 @@
+// Manages the interactive multi-agent collaboration interface and renders its results.
 import { MarkdownRenderer } from "./MarkdownRenderer.js";
 
 export class ProviderInterface {

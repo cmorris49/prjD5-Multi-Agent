@@ -1,3 +1,4 @@
+// Defines shared AI provider behavior, response parsing, timeouts, and provider errors.
 export class ProviderError extends Error {
     constructor(code, message, {
         status = null,
