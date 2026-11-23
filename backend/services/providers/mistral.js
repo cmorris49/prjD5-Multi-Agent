@@ -23,7 +23,7 @@ export class MistralProvider extends BaseProvider {
                         content: prompt
                     }
                 ],
-                max_tokens: 300
+                max_tokens: 2000
             }
         );
 

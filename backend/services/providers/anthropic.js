@@ -18,7 +18,7 @@ export class AnthropicProvider extends BaseProvider {
             },
             {
                 model: this.model,
-                max_tokens: 300,
+                max_tokens: 2000,
                 messages: [
                     {
                         role: "user",
