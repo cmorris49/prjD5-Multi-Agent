@@ -177,29 +177,513 @@ button:disabled {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 1rem;
+    align-items: stretch;
 }
 
 .provider-result {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
     border: 1px solid #d7dde7;
+    border-radius: 0.5rem;
     background: #ffffff;
+    box-shadow: 0 1px 2px rgba(23, 32, 51, 0.06);
+}
+
+.provider-result-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem 0.75rem;
+    border-bottom: 1px solid #e3e7ed;
 }
 
 .provider-result h3 {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
     font-size: 1rem;
 }
 
 .provider-result .agent-provider {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
     color: #526174;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
-.provider-result p {
-    margin-bottom: 0;
-    line-height: 1.5;
+.vote-badge {
+    flex-shrink: 0;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    color: #526174;
+    background: #eef2f7;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.vote-badge.is-winner {
+    color: #ffffff;
+    background: #146c35;
+}
+
+.provider-result.is-winner {
+    border-color: #146c35;
+    box-shadow: 0 0 0 2px rgba(20, 108, 53, 0.25);
+}
+
+.agent-answer {
+    flex: 1;
+    max-height: 24rem;
+    padding: 0.9rem 1rem 1rem;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    font-size: 0.925rem;
+    line-height: 1.55;
+}
+
+.agent-answer.is-status {
+    color: #526174;
     white-space: pre-wrap;
+}
+
+.agent-answer > :first-child {
+    margin-top: 0;
+}
+
+.agent-answer > :last-child {
+    margin-bottom: 0;
+}
+
+.agent-answer p,
+.agent-answer ul,
+.agent-answer ol,
+.agent-answer pre,
+.agent-answer blockquote {
+    margin: 0 0 0.7rem;
+}
+
+.agent-answer ul,
+.agent-answer ol {
+    padding-left: 1.25rem;
+}
+
+.agent-answer li + li {
+    margin-top: 0.25rem;
+}
+
+.agent-answer h4,
+.agent-answer h5,
+.agent-answer h6 {
+    margin: 0.9rem 0 0.4rem;
+    font-size: 0.95rem;
+}
+
+.agent-answer code {
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    background: #eef2f7;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.85em;
+}
+
+.agent-answer pre {
+    padding: 0.6rem;
+    overflow-x: auto;
+    border-radius: 0.25rem;
+    background: #eef2f7;
+}
+
+.agent-answer pre code {
+    padding: 0;
+    background: none;
+}
+
+.agent-answer blockquote {
+    padding-left: 0.75rem;
+    border-left: 3px solid #d7dde7;
+    color: #526174;
+}
+
+.agent-answer hr {
+    margin: 0.9rem 0;
+    border: 0;
+    border-top: 1px solid #e3e7ed;
+}
+
+.consensus-banner {
+    min-height: 0;
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #f0c7c5;
+    border-radius: 0.5rem;
+    background: #fdf1f0;
+    font-weight: 600;
+}
+
+.consensus-banner.success {
+    border-color: #b7dcc4;
+    background: #eef8f1;
+}
+
+.consensus-banner:empty {
+    display: none;
+}
+
+/* Workspace page: full desktop width so the five agents get as much room
+   as possible side by side; the prompt panel stays centred and compact. */
+.workspace-page .site-header {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.workspace-page .page-container {
+    width: min(100% - 3rem, 140rem);
+    padding-top: 1.5rem;
+}
+
+.workspace-page .results-section {
+    padding-top: 0;
+    border-top: 0;
+}
+
+@media (min-width: 64rem) {
+    .workspace-page .provider-results {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* Prompt panel */
+.prompt-panel {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border: 1px solid #d7dde7;
+    border-radius: 0.9rem;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
+}
+
+.prompt-panel h2 {
+    margin-bottom: 1rem;
+}
+
+.mode-picker,
+.agent-picker {
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+}
+
+.mode-picker legend,
+.agent-picker legend {
+    margin-bottom: 0.5rem;
+    padding: 0;
+    color: #526174;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mode-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.mode-option,
+.agent-chip {
+    position: relative;
+    cursor: pointer;
+}
+
+.mode-option input,
+.agent-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mode-option-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    height: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.6rem;
+    border: 1px solid #d7dde7;
+    border-radius: 0.6rem;
+    background: #f8fafc;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.mode-option-body::before {
+    content: "";
+    position: absolute;
+    top: 0.95rem;
+    left: 1rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 2px solid #9da8b8;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.mode-option-title {
+    font-weight: 600;
+}
+
+.mode-option-hint {
+    color: #526174;
+    font-size: 0.85rem;
+}
+
+.mode-option:hover .mode-option-body,
+.agent-chip:hover .agent-chip-body {
+    border-color: #8ab4f8;
+}
+
+.mode-option input:checked + .mode-option-body {
+    border-color: #2457a7;
+    background: #eef3fb;
+    box-shadow: 0 0 0 1px #2457a7;
+}
+
+.mode-option input:checked + .mode-option-body::before {
+    border-color: #2457a7;
+    background: radial-gradient(circle, #2457a7 45%, #ffffff 50%);
+}
+
+.mode-option input:focus-visible + .mode-option-body,
+.agent-chip input:focus-visible + .agent-chip-body {
+    outline: 3px solid #8ab4f8;
+    outline-offset: 2px;
+}
+
+.agent-picker[hidden] {
+    display: none;
+}
+
+.agent-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.agent-chip-body {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid #d7dde7;
+    border-radius: 999px;
+    background: #f8fafc;
+    font-size: 0.9rem;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.agent-chip-role {
+    font-weight: 600;
+}
+
+.agent-chip-provider {
+    color: #526174;
+    font-size: 0.8rem;
+}
+
+.agent-chip input:checked + .agent-chip-body {
+    border-color: #2457a7;
+    color: #ffffff;
+    background: #2457a7;
+}
+
+.agent-chip input:checked + .agent-chip-body .agent-chip-provider {
+    color: #d6e3f7;
+}
+
+.composer {
+    border: 1px solid #9da8b8;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.composer:focus-within {
+    border-color: #2457a7;
+    box-shadow: 0 0 0 3px rgba(36, 87, 167, 0.18);
+}
+
+.composer textarea {
+    display: block;
+    width: 100%;
+    min-height: 5.5rem;
+    padding: 0.9rem 1rem 0.4rem;
+    border: 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+    color: #172033;
+    background: transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.composer textarea:focus-visible {
+    outline: none;
+}
+
+.composer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.6rem 0.6rem 1rem;
+}
+
+.composer-meta {
+    display: inline-flex;
+    gap: 0.4rem;
+    color: #7a8698;
+    font-size: 0.8rem;
+}
+
+.composer-submit {
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.55rem;
+    font-weight: 600;
+}
+
+.is-busy .composer-submit {
+    position: relative;
+    padding-left: 2.4rem;
+}
+
+.is-busy .composer-submit::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: -0.45rem;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Result cards */
+.provider-result-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.35rem;
+}
+
+.expand-button {
+    min-height: 0;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid #d7dde7;
+    border-radius: 0.35rem;
+    color: #2457a7;
+    background: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.expand-button:hover:not(:disabled) {
+    border-color: #2457a7;
+    background: #eef3fb;
+}
+
+.provider-result.is-idle {
+    opacity: 0.55;
+}
+
+.agent-answer.is-loading::after {
+    content: "";
+    display: block;
+    height: 5.5rem;
+    margin-top: 0.75rem;
+    border-radius: 0.3rem;
+    background:
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent) 0 0 / 50% 100% no-repeat,
+        repeating-linear-gradient(#e6ebf2 0 0.7rem, transparent 0.7rem 1.4rem);
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    from {
+        background-position: -100% 0, 0 0;
+    }
+
+    to {
+        background-position: 200% 0, 0 0;
+    }
+}
+
+/* Expanded reading view */
+.answer-dialog {
+    width: min(100% - 3rem, 56rem);
+    max-height: min(100% - 4rem, 48rem);
+    padding: 0;
+    border: 1px solid #d7dde7;
+    border-radius: 0.9rem;
+    color: #172033;
+    background: #ffffff;
+    box-shadow: 0 24px 64px rgba(23, 32, 51, 0.25);
+}
+
+.answer-dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.answer-dialog::backdrop {
+    background: rgba(23, 32, 51, 0.45);
+}
+
+.answer-dialog.is-winner {
+    border: 2px solid #146c35;
+}
+
+.answer-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid #e3e7ed;
+}
+
+.answer-dialog-header h2 {
+    margin-bottom: 0.2rem;
+}
+
+.answer-dialog-header .agent-provider {
+    margin: 0;
+    color: #526174;
+}
+
+.answer-dialog-body {
+    max-height: none;
+    padding: 1.25rem 1.5rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.65;
 }
 
 .table-container {

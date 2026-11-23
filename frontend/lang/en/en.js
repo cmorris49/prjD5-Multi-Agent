@@ -33,16 +33,21 @@ export const en = {
     },
 
     user: {
-        pageTitle: "Workspace | Multi-Agent AI Collaboration",
-        heading: "AI workspace",
+        pageTitle: "Multi-Agent Tribunal",
+        heading: "Multi-Agent Tribunal",
         promptHeading: "Ask the agents",
         promptLabel: "Prompt",
-        promptPlaceholder: "Enter a question or topic",
+        promptPlaceholder: "Put a question before the tribunal...",
         modeLabel: "Response mode",
-        consensusMode: "Consensus (all agents)",
+        consensusMode: "Consensus",
+        consensusHint: "All five agents debate and vote on the best answer",
         singleMode: "Single agent",
+        singleHint: "Ask one agent directly for a quick answer",
         agentLabel: "Choose an agent",
-        submitButton: "Submit prompt",
+        submitButton: "Ask the tribunal",
+        shortcutHint: "Ctrl + Enter to send",
+        expandButton: "Expand",
+        closeButton: "Close",
         resultsHeading: "Agent responses",
         noResponse: "No response yet.",
         notSelected: "Not selected for this request.",
@@ -51,7 +56,11 @@ export const en = {
         allProvidersFailed: "No agents could respond. Please try again later.",
         consensusReached: "Consensus reached ({votes} votes): ",
         noConsensus: "The agents did not reach a majority consensus.",
-        voteCount: "Votes: {counts}"
+        voteCount: "Votes: {counts}",
+        consensusWinner: "Consensus reached: {agents} won with {votes} of {total} votes.",
+        winnerBadge: "Winner \u00b7 {votes}",
+        voteSingular: "{votes} vote",
+        votePlural: "{votes} votes"
     },
 
     admin: {

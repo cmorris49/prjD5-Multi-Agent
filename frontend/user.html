@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Multi-Agent Tribunal</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
+<body class="workspace-page">
     <header class="site-header">
         <div>
             <h1 data-i18n="user.heading"></h1>
@@ -17,53 +17,113 @@
     </header>
 
     <main class="page-container">
-        <section aria-labelledby="promptHeading">
+        <section class="prompt-panel" aria-labelledby="promptHeading">
             <h2 id="promptHeading" data-i18n="user.promptHeading"></h2>
 
             <form id="promptForm">
-                <div class="form-field">
-                    <label for="responseMode" data-i18n="user.modeLabel"></label>
-                    <select id="responseMode" name="mode">
-                        <option value="consensus" data-i18n="user.consensusMode"></option>
-                        <option value="single" data-i18n="user.singleMode"></option>
-                    </select>
-                </div>
+                <fieldset class="mode-picker">
+                    <legend data-i18n="user.modeLabel"></legend>
 
-                <div id="agentField" class="form-field">
-                    <label for="agent" data-i18n="user.agentLabel"></label>
-                    <select id="agent" name="agent">
-                        <option value="optimist" data-i18n="agents.optimist.role"></option>
-                        <option value="skeptic" data-i18n="agents.skeptic.role"></option>
-                        <option value="logical_analyst" data-i18n="agents.logical_analyst.role"></option>
-                        <option value="creative_thinker" data-i18n="agents.creative_thinker.role"></option>
-                        <option value="pragmatist" data-i18n="agents.pragmatist.role"></option>
-                    </select>
-                </div>
+                    <label class="mode-option">
+                        <input type="radio" name="mode" value="consensus" checked>
+                        <span class="mode-option-body">
+                            <span class="mode-option-title" data-i18n="user.consensusMode"></span>
+                            <span class="mode-option-hint" data-i18n="user.consensusHint"></span>
+                        </span>
+                    </label>
 
-                <div class="form-field">
-                    <label for="prompt" data-i18n="user.promptLabel"></label>
+                    <label class="mode-option">
+                        <input type="radio" name="mode" value="single">
+                        <span class="mode-option-body">
+                            <span class="mode-option-title" data-i18n="user.singleMode"></span>
+                            <span class="mode-option-hint" data-i18n="user.singleHint"></span>
+                        </span>
+                    </label>
+                </fieldset>
+
+                <fieldset id="agentField" class="agent-picker">
+                    <legend data-i18n="user.agentLabel"></legend>
+                    <div class="agent-chips">
+                        <label class="agent-chip">
+                            <input type="radio" name="agent" value="optimist" checked>
+                            <span class="agent-chip-body">
+                                <span class="agent-chip-role" data-i18n="agents.optimist.role"></span>
+                                <span class="agent-chip-provider" data-i18n="agents.optimist.provider"></span>
+                            </span>
+                        </label>
+                        <label class="agent-chip">
+                            <input type="radio" name="agent" value="skeptic">
+                            <span class="agent-chip-body">
+                                <span class="agent-chip-role" data-i18n="agents.skeptic.role"></span>
+                                <span class="agent-chip-provider" data-i18n="agents.skeptic.provider"></span>
+                            </span>
+                        </label>
+                        <label class="agent-chip">
+                            <input type="radio" name="agent" value="logical_analyst">
+                            <span class="agent-chip-body">
+                                <span class="agent-chip-role" data-i18n="agents.logical_analyst.role"></span>
+                                <span class="agent-chip-provider" data-i18n="agents.logical_analyst.provider"></span>
+                            </span>
+                        </label>
+                        <label class="agent-chip">
+                            <input type="radio" name="agent" value="creative_thinker">
+                            <span class="agent-chip-body">
+                                <span class="agent-chip-role" data-i18n="agents.creative_thinker.role"></span>
+                                <span class="agent-chip-provider" data-i18n="agents.creative_thinker.provider"></span>
+                            </span>
+                        </label>
+                        <label class="agent-chip">
+                            <input type="radio" name="agent" value="pragmatist">
+                            <span class="agent-chip-body">
+                                <span class="agent-chip-role" data-i18n="agents.pragmatist.role"></span>
+                                <span class="agent-chip-provider" data-i18n="agents.pragmatist.provider"></span>
+                            </span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="composer">
+                    <label for="prompt" class="visually-hidden" data-i18n="user.promptLabel"></label>
                     <textarea
                         id="prompt"
                         name="prompt"
-                        rows="5"
+                        rows="3"
                         maxlength="2000"
                         required
                         data-i18n-placeholder="user.promptPlaceholder"
                     ></textarea>
-                </div>
 
-                <button type="submit" data-i18n="user.submitButton"></button>
+                    <div class="composer-footer">
+                        <span class="composer-meta">
+                            <span id="promptCount">0 / 2000</span>
+                            <span aria-hidden="true">&middot;</span>
+                            <span data-i18n="user.shortcutHint"></span>
+                        </span>
+                        <button type="submit" class="composer-submit" data-i18n="user.submitButton"></button>
+                    </div>
+                </div>
             </form>
         </section>
 
         <section class="results-section" aria-labelledby="resultsHeading">
             <h2 id="resultsHeading" data-i18n="user.resultsHeading"></h2>
-            <div id="results" class="provider-results" aria-live="polite"></div>
             <p id="consensusResult" class="form-message" aria-live="polite"></p>
+            <div id="results" class="provider-results" aria-live="polite"></div>
         </section>
 
         <p id="pageMessage" class="form-message" role="status" aria-live="polite"></p>
     </main>
+
+    <dialog id="answerDialog" class="answer-dialog" aria-labelledby="answerDialogTitle">
+        <header class="answer-dialog-header">
+            <div>
+                <h2 id="answerDialogTitle"></h2>
+                <p id="answerDialogProvider" class="agent-provider"></p>
+            </div>
+            <button type="button" id="answerDialogClose" class="secondary-button" data-i18n="user.closeButton"></button>
+        </header>
+        <div id="answerDialogBody" class="agent-answer answer-dialog-body"></div>
+    </dialog>
 
     <script type="module" src="./scripts/pages/userPage.js"></script>
 </body>

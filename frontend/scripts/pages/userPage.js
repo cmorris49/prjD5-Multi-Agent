@@ -48,8 +48,11 @@ class UserPage {
             navigation: this.services.navigation,
             form: document.getElementById("promptForm"),
             promptInput: document.getElementById("prompt"),
-            modeInput: document.getElementById("responseMode"),
-            agentInput: document.getElementById("agent"),
+            modeInput: document.getElementById("promptForm").elements.namedItem("mode"),
+            agentInput: document.getElementById("promptForm").elements.namedItem("agent"),
+            agentField: document.getElementById("agentField"),
+            promptCount: document.getElementById("promptCount"),
+            dialog: document.getElementById("answerDialog"),
             resultsContainer: document.getElementById("results"),
             consensusElement: document.getElementById("consensusResult"),
             messageElement: this.messageElement
